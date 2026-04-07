@@ -28,6 +28,14 @@ One command. Five minutes. Running as a service.
 
 Skill packs give Nimmit domain knowledge on day one. They're **starter kits, not limits** — Nimmit can learn any domain you teach it.
 
+### Core
+
+| Pack | Purpose | What It Does |
+|------|---------|--------------|
+| 🧠 **Memory** | Memory architecture | Hierarchical storage, daily logging, weekly compaction, proactive memory hygiene |
+
+Installed by default. Teaches Nimmit to write everything down, index (not dump), and prune aggressively.
+
 ### Business & Operations
 
 | Pack | Domain | What Nimmit Can Do |
@@ -113,6 +121,7 @@ koompi-nimmit/
 │   ├── hospitality/        # Hotels + resorts
 │   ├── legal/              # Law firms
 │   ├── logistics/          # Supply chain
+│   ├── memory/             # Memory architecture (core)
 │   ├── nonprofit/          # NGOs + foundations
 │   ├── real-estate/        # Brokerages + agents
 │   ├── sme/                # Small & medium businesses

@@ -45,9 +45,9 @@ fi
 
 WORKSPACE=$(openclaw agents show "$AGENT" --json 2>/dev/null | grep -oP '"workspace"\s*:\s*"\K[^"]+' || echo "$HOME/.openclaw/agents/$AGENT/workspace")
 
-# ─── 4. Skill pack ───
+# ─── 4. Skill packs (multi-select) ───
 echo ""
-info "Select a skill pack (optional):"
+info "Select skill packs (space-separated, e.g. '1 3 7'):"
 echo ""
 echo "  Business & Operations"
 echo "    1) 👔 Executive        2) 🏪 SME"
@@ -67,27 +67,60 @@ echo "  Intelligence & Research"
 echo "   15) 🌍 Geopolitical    16) 📊 Economist"
 echo "   17) 🕷️ Web Crawler"
 echo ""
-echo "   18) Skip"
+echo "   all) Install everything    skip) None"
 echo ""
-read -rp "Choose [1-18]: " PICK
+read -rp "Choose: " PICKS
 
-case $PICK in
-  1) SKILL="executive" ;; 2) SKILL="sme" ;; 3) SKILL="finance" ;; 4) SKILL="creative" ;;
-  5) SKILL="logistics" ;; 6) SKILL="construction" ;; 7) SKILL="government" ;; 8) SKILL="education" ;;
-  9) SKILL="nonprofit" ;; 10) SKILL="healthcare" ;; 11) SKILL="legal" ;; 12) SKILL="real-estate" ;;
-  13) SKILL="agriculture" ;; 14) SKILL="hospitality" ;; 15) SKILL="geopolitical" ;; 16) SKILL="economist" ;;
-  17) SKILL="web-crawler" ;; *) SKILL="" ;;
-esac
+resolve_skill() {
+  case $1 in
+    1) echo "executive" ;; 2) echo "sme" ;; 3) echo "finance" ;; 4) echo "creative" ;;
+    5) echo "logistics" ;; 6) echo "construction" ;; 7) echo "government" ;; 8) echo "education" ;;
+    9) echo "nonprofit" ;; 10) echo "healthcare" ;; 11) echo "legal" ;; 12) echo "real-estate" ;;
+    13) echo "agriculture" ;; 14) echo "hospitality" ;; 15) echo "geopolitical" ;; 16) echo "economist" ;;
+    17) echo "web-crawler" ;; *) echo "" ;;
+  esac
+}
 
-if [[ -n "$SKILL" ]]; then
-  DEST="$WORKSPACE/skills/nimmit-${SKILL}"
-  mkdir -p "$DEST"
-  curl -fsSL "$SKILL_BASE/$SKILL/SKILL.md" -o "$DEST/SKILL.md" \
-    && ok "$SKILL skill pack installed" \
-    || warn "Could not download skill pack"
+SKILLS=()
+if [[ "$PICKS" == "all" ]]; then
+  for i in $(seq 1 17); do SKILLS+=("$(resolve_skill $i)"); done
+elif [[ "$PICKS" != "skip" && -n "$PICKS" ]]; then
+  for p in $PICKS; do
+    s=$(resolve_skill "$p")
+    [[ -n "$s" ]] && SKILLS+=("$s")
+  done
 fi
 
-# ─── 5. Telegram ───
+if (( ${#SKILLS[@]} > 5 )); then
+  warn "Installing ${#SKILLS[@]} packs — this increases token costs per API call."
+fi
+
+INSTALLED=0
+for SKILL in "${SKILLS[@]}"; do
+  DEST="$WORKSPACE/skills/nimmit-${SKILL}"
+  mkdir -p "$DEST"
+  if curl -fsSL "$SKILL_BASE/$SKILL/SKILL.md" -o "$DEST/SKILL.md" 2>/dev/null; then
+    ok "$SKILL"
+    ((INSTALLED++))
+  else
+    warn "Could not download $SKILL"
+  fi
+done
+(( INSTALLED > 0 )) && ok "$INSTALLED skill pack(s) installed"
+
+# ─── 5. Memory architecture (recommended) ───
+echo ""
+read -rp "Install memory architecture skill? (recommended) [Y/n]: " MEM_PICK
+MEM_PICK="${MEM_PICK:-Y}"
+if [[ "$MEM_PICK" =~ ^[Yy] ]]; then
+  DEST="$WORKSPACE/skills/nimmit-memory"
+  mkdir -p "$DEST"
+  curl -fsSL "$SKILL_BASE/memory/SKILL.md" -o "$DEST/SKILL.md" 2>/dev/null \
+    && ok "Memory architecture installed" \
+    || warn "Could not download memory skill"
+fi
+
+# ─── 6. Telegram ───
 echo ""
 read -rp "Telegram bot token (blank to skip): " TG_TOKEN
 if [[ -n "$TG_TOKEN" ]]; then
@@ -103,7 +136,7 @@ if [[ -n "$TG_TOKEN" ]]; then
   ok "Telegram configured"
 fi
 
-# ─── 6. systemd service ───
+# ─── 7. systemd service ───
 info "Setting up service..."
 SERVICE="$HOME/.config/systemd/user/openclaw-gateway.service"
 mkdir -p "$(dirname "$SERVICE")"
@@ -114,7 +147,7 @@ After=network-online.target
 
 [Service]
 Type=simple
-EnvironmentFile=$HOME/.openclaw/.env
+EnvironmentFile=-$HOME/.openclaw/.env
 ExecStart=$(which bun) run $(which openclaw) gateway
 Restart=on-failure
 RestartSec=10
