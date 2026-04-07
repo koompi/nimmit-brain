@@ -28,12 +28,42 @@ One command. Five minutes. Running as a service.
 
 Skill packs give Nimmit domain knowledge on day one. They're **starter kits, not limits** — Nimmit can learn any domain you teach it.
 
+### Business & Operations
+
 | Pack | Domain | What Nimmit Can Do |
 |------|--------|-------------------|
 | 👔 **Executive** | Leadership, C-suite | Morning briefings, decision support, report drafting, overnight intelligence, weekly reviews |
-| 🏫 **Education** | Schools, universities | Scheduling, curriculum planning, attendance tracking, parent communication, content generation |
-| 🏛️ **Government** | Ministries, departments | Formal documents, meeting prep, procurement tracking, compliance, inter-department communication |
 | 🏪 **SME** | Any business | Social media, customer service, inventory alerts, marketing campaigns, financial reports |
+| 💰 **Finance** | Accounting, CFO | AP/AR, reconciliation, budgets, P&L, cash flow forecasting, month-end close |
+| 🎨 **Creative** | Agencies, studios | Project management, client briefs, content calendars, review/approval workflows, asset management |
+| 🚚 **Logistics** | Supply chain | Shipment tracking, warehouse management, route planning, customs docs, fleet coordination |
+| 🏗️ **Construction** | Project management | Scheduling, daily site reports, subcontractor coordination, procurement, safety compliance |
+
+### Public Sector & Education
+
+| Pack | Domain | What Nimmit Can Do |
+|------|--------|-------------------|
+| 🏛️ **Government** | Ministries, departments | Formal documents, meeting prep, procurement tracking, compliance, inter-department communication |
+| 🏫 **Education** | Schools, universities | Scheduling, curriculum planning, attendance tracking, parent communication, content generation |
+| 🤝 **Nonprofit** | NGOs, foundations | Donor management, grant tracking, fundraising, volunteer coordination, impact reporting |
+
+### Professional Services
+
+| Pack | Domain | What Nimmit Can Do |
+|------|--------|-------------------|
+| ⚕️ **Healthcare** | Clinics, practices | Patient scheduling, records management, prescriptions, follow-ups, lab tracking, compliance |
+| ⚖️ **Legal** | Law firms | Case management, document drafting, deadline tracking, billing, discovery, court calendar |
+| 🏠 **Real Estate** | Brokerages, agents | Listings, client pipeline, showings, contracts, market analysis, transaction lifecycle |
+| 🌾 **Agriculture** | Farms, cooperatives | Crop planning, weather alerts, inventory, market prices, harvest tracking, equipment maintenance |
+| 🏨 **Hospitality** | Hotels, resorts | Reservations, guest communication, housekeeping, revenue management, reviews, events |
+
+### Intelligence & Research
+
+| Pack | Domain | What Nimmit Can Do |
+|------|--------|-------------------|
+| 🌍 **Geopolitical** | Risk analysis, OSINT | Conflict monitoring, sanctions tracking, scenario analysis, stakeholder mapping, intelligence briefs |
+| 📊 **Economist** | Economic analysis | Macro indicators, central bank monitoring, forecasting, inflation analysis, research notes |
+| 🕷️ **Web Crawler** | Research, monitoring | Social media monitoring, brand tracking, competitor intelligence, trend detection, news aggregation |
 
 Don't see your domain? Nimmit works without a skill pack. Or write your own — it's a single markdown file.
 
@@ -70,10 +100,23 @@ You install Nimmit
 koompi-nimmit/
 ├── install.sh              # One-command installer
 ├── skill-packs/
-│   ├── executive/SKILL.md  # Leadership + C-suite
-│   ├── education/SKILL.md  # Schools + universities
-│   ├── government/SKILL.md # Ministries + departments
-│   └── sme/SKILL.md        # Small & medium businesses
+│   ├── agriculture/        # Farms + cooperatives
+│   ├── construction/       # Project management
+│   ├── creative/           # Agencies + studios
+│   ├── economist/          # Economic analysis
+│   ├── education/          # Schools + universities
+│   ├── executive/          # Leadership + C-suite
+│   ├── finance/            # Accounting + CFO
+│   ├── geopolitical/       # Risk analysis + OSINT
+│   ├── government/         # Ministries + departments
+│   ├── healthcare/         # Clinics + practices
+│   ├── hospitality/        # Hotels + resorts
+│   ├── legal/              # Law firms
+│   ├── logistics/          # Supply chain
+│   ├── nonprofit/          # NGOs + foundations
+│   ├── real-estate/        # Brokerages + agents
+│   ├── sme/                # Small & medium businesses
+│   └── web-crawler/        # Research + monitoring
 ├── worker/                 # Cloudflare Worker (nimmit.koompi.ai)
 │   ├── src/index.ts
 │   └── wrangler.toml

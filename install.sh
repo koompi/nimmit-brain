@@ -48,16 +48,35 @@ WORKSPACE=$(openclaw agents show "$AGENT" --json 2>/dev/null | grep -oP '"worksp
 # ─── 4. Skill pack ───
 echo ""
 info "Select a skill pack (optional):"
-echo "  1) 👔 Executive"
-echo "  2) 🏫 Education"
-echo "  3) 🏛️ Government"
-echo "  4) 🏪 SME"
-echo "  5) Skip"
 echo ""
-read -rp "Choose [1-5]: " PICK
+echo "  Business & Operations"
+echo "    1) 👔 Executive        2) 🏪 SME"
+echo "    3) 💰 Finance          4) 🎨 Creative"
+echo "    5) 🚚 Logistics        6) 🏗️ Construction"
+echo ""
+echo "  Public Sector & Education"
+echo "    7) 🏛️ Government       8) 🏫 Education"
+echo "    9) 🤝 Nonprofit"
+echo ""
+echo "  Professional Services"
+echo "   10) ⚕️ Healthcare      11) ⚖️ Legal"
+echo "   12) 🏠 Real Estate     13) 🌾 Agriculture"
+echo "   14) 🏨 Hospitality"
+echo ""
+echo "  Intelligence & Research"
+echo "   15) 🌍 Geopolitical    16) 📊 Economist"
+echo "   17) 🕷️ Web Crawler"
+echo ""
+echo "   18) Skip"
+echo ""
+read -rp "Choose [1-18]: " PICK
 
 case $PICK in
-  1) SKILL="executive" ;; 2) SKILL="education" ;; 3) SKILL="government" ;; 4) SKILL="sme" ;; *) SKILL="" ;;
+  1) SKILL="executive" ;; 2) SKILL="sme" ;; 3) SKILL="finance" ;; 4) SKILL="creative" ;;
+  5) SKILL="logistics" ;; 6) SKILL="construction" ;; 7) SKILL="government" ;; 8) SKILL="education" ;;
+  9) SKILL="nonprofit" ;; 10) SKILL="healthcare" ;; 11) SKILL="legal" ;; 12) SKILL="real-estate" ;;
+  13) SKILL="agriculture" ;; 14) SKILL="hospitality" ;; 15) SKILL="geopolitical" ;; 16) SKILL="economist" ;;
+  17) SKILL="web-crawler" ;; *) SKILL="" ;;
 esac
 
 if [[ -n "$SKILL" ]]; then
