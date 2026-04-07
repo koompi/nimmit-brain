@@ -43,7 +43,8 @@ else
     || warn "Run manually: openclaw agents add --name $AGENT"
 fi
 
-WORKSPACE=$(openclaw agents show "$AGENT" --json 2>/dev/null | grep -oP '"workspace"\s*:\s*"\K[^"]+' || echo "$HOME/.openclaw/agents/$AGENT/workspace")
+WORKSPACE=$(openclaw agents show "$AGENT" --json 2>/dev/null | sed -n 's/.*"workspace"\s*:\s*"\([^"]*\)".*/\1/p' | head -1)
+WORKSPACE="${WORKSPACE:-$HOME/.openclaw/agents/$AGENT/workspace}"
 
 # ─── 4. Skill packs (multi-select) ───
 echo ""
@@ -69,7 +70,7 @@ echo "   17) 🕷️ Web Crawler"
 echo ""
 echo "   all) Install everything    skip) None"
 echo ""
-read -rp "Choose: " PICKS
+read -rp "Choose: " PICKS </dev/tty
 
 resolve_skill() {
   case $1 in
@@ -101,7 +102,7 @@ for SKILL in "${SKILLS[@]}"; do
   mkdir -p "$DEST"
   if curl -fsSL "$SKILL_BASE/$SKILL/SKILL.md" -o "$DEST/SKILL.md" 2>/dev/null; then
     ok "$SKILL"
-    ((INSTALLED++))
+    INSTALLED=$((INSTALLED + 1))
   else
     warn "Could not download $SKILL"
   fi
@@ -110,7 +111,7 @@ done
 
 # ─── 5. Memory architecture (recommended) ───
 echo ""
-read -rp "Install memory architecture skill? (recommended) [Y/n]: " MEM_PICK
+read -rp "Install memory architecture skill? (recommended) [Y/n]: " MEM_PICK </dev/tty
 MEM_PICK="${MEM_PICK:-Y}"
 if [[ "$MEM_PICK" =~ ^[Yy] ]]; then
   DEST="$WORKSPACE/skills/nimmit-memory"
@@ -122,7 +123,7 @@ fi
 
 # ─── 6. Telegram ───
 echo ""
-read -rp "Telegram bot token (blank to skip): " TG_TOKEN
+read -rp "Telegram bot token (blank to skip): " TG_TOKEN </dev/tty
 if [[ -n "$TG_TOKEN" ]]; then
   ENV_FILE="$HOME/.openclaw/.env"
   mkdir -p "$(dirname "$ENV_FILE")"
