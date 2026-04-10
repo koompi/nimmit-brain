@@ -208,6 +208,9 @@ interactive_setup() {
 
     SLUG="${SLUG:-$(echo "$AGENT_NAME" | tr '[:upper:]' '[:lower:]' | tr ' ' '-' | tr -cd '[:alnum:]-')}"
 
+    info "Your brain will live at ~/.openclaw/<slug>/"
+    info "Your work output goes to ~/workspace/"
+
     echo ""
 
     # ── Step 2: Owner ──
@@ -466,8 +469,12 @@ setup_brain() {
     done
 
     # Ensure memory subdirectories exist
-    mkdir -p "$BRAIN_DIR"/memory/{semantic,procedural,decisions,episodic,failures,outcomes,working,research}
+    mkdir -p "$BRAIN_DIR"/memory/{daily,semantic,procedural,decisions,episodic,failures,outcomes,working,research}
     mkdir -p "$BRAIN_DIR"/{projects,tasks,tools,users}
+
+    # Create workspace directory
+    mkdir -p "$HOME/workspace"
+    info "Created ~/workspace/ for work output"
 
     # ─── Template substitution ───
     local AGENT_NAME_LOWER
@@ -532,7 +539,7 @@ setup_brain() {
     "list": [{
       "id": "main",
       "default": true,
-      "workspace": "${BRAIN_DIR}",
+      "workspace": "$HOME/workspace",
       "identity": { "name": "${AGENT_NAME}", "emoji": "🧠" },
       "subagents": { "allowAgents": ["*"] }
     }]
@@ -780,9 +787,12 @@ finalize() {
     echo -e "${GREEN}${NC}"
     echo -e "${GREEN}━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━${NC}"
     echo ""
-    echo -e "  ${BOLD}Brain${NC}       $BRAIN_DIR/"
-    echo -e "  ${BOLD}Config${NC}      $CONFIG_FILE"
-    echo -e "  ${BOLD}Secrets${NC}     $ENV_FILE"
+    echo -e "  ${BOLD}Your setup:${NC}"
+    echo -e "    ~/.openclaw/openclaw.json  # Gateway config"
+    echo -e "    ~/.openclaw/.env           # API keys"
+    echo -e "    ${BRAIN_DIR}/               # Brain (markdown only)"
+    echo -e "    ~/workspace/                 # All work output"
+    echo ""
     echo -e "  ${BOLD}Model${NC}       ${PRIMARY_MODEL} ${DIM}(swappable via /model)${NC}"
     echo -e "  ${BOLD}Auto-update${NC} every 6 hours ${DIM}(openclaw-update.timer)${NC}"
     echo ""
