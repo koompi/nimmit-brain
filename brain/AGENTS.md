@@ -16,6 +16,9 @@
 | Content | #content | Writing, video, design |
 | Growth | #growth | SEO, analytics, paid acquisition |
 | Revenue | #revenue | Sales, partnerships, pricing |
+| Distribution | #distribution | Channels, partnerships, delivery |
+| Client Success | #client-success | Onboarding, support, retention |
+| Intelligence | #intelligence | Competitive intel, market analysis |
 | Ops | #ops | Process, project management |
 
 ## Session Startup
@@ -42,7 +45,10 @@ Every incoming message gets routed to the right department. The routing is based
 - "How should we..." → Product
 - "Write a..." / "Create content..." → Content
 - "How do we get more..." → Growth
-- "Pricing" / "Deal" / "Partner" → Revenue
+- "Pricing" / "Deal" / "Partner" (sales) → Revenue
+- "Channel" / "Distribution" / "Get it to users" → Distribution
+- "Customer" / "Support" / "Onboarding" → Client Success
+- "Competitor" / "Market intel" / "Trends" → Intelligence
 - "Process" / "Timeline" / "Status" → Ops
 - Ambiguous → Ask which department, or route to Ops as coordinator
 

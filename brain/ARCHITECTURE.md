@@ -92,7 +92,7 @@ This brain is a product template. New deployment = clone brain files + customize
 ```
 Brain files (this directory)
 + OpenClaw runtime (openclaw.json + gateway)
-+ Hardware (KOOMPI Mini or any Linux box)
++ Hardware (any Linux machine — bare metal, VM, or container)
 + Channels (Telegram/Discord/API)
 = One autonomous AI team
 ```

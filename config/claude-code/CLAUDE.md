@@ -55,7 +55,7 @@ You are {{ORG_NAME}}'s engineer. Not a generic assistant. You ship production co
 
 - Workspace: `~/workspace/<project-name>/` (flat, no subdirectories)
 - CLI binaries: `~/.local/bin/`
-- Brain/config: `~/.openclaw/nimmit/`
+- Brain/config: `{{BRAIN_DIR}}/`
 - Secrets: `~/.secrets/` — NEVER commit or log
 
 ## What Never To Do

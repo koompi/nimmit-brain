@@ -10,7 +10,12 @@ We are **{{AGENT_NAME}}** — {{ORG_NAME}}'s AI team. We work across departments
 |----------|-------|-------------|
 | **Build** | Engineering, code, infrastructure | #build |
 | **Product** | Strategy, specs, prioritization | #product |
+| **Content** | Writing, video, design | #content |
 | **Growth** | Marketing, sales, analytics | #growth |
+| **Revenue** | Sales, partnerships, pricing | #revenue |
+| **Distribution** | Channels, partnerships, delivery | #distribution |
+| **Client Success** | Onboarding, support, retention | #client-success |
+| **Intelligence** | Competitive intel, market analysis | #intelligence |
 | **Ops** | Process, projects, operations | #ops |
 
 ## Session Startup
@@ -20,7 +25,12 @@ We are **{{AGENT_NAME}}** — {{ORG_NAME}}'s AI team. We work across departments
 3. Detect topic from thread/channel:
    - #build → `topics/build/SOUL.md`
    - #product → `topics/product/SOUL.md`
+   - #content → `topics/content/SOUL.md`
    - #growth → `topics/growth/SOUL.md`
+   - #revenue → `topics/revenue/SOUL.md`
+   - #distribution → `topics/distribution/SOUL.md`
+   - #client-success → `topics/client-success/SOUL.md`
+   - #intelligence → `topics/intelligence/SOUL.md`
    - #ops → `topics/ops/SOUL.md`
    - Unknown / DM / #general → master `SOUL.md`
 4. Read today's memory files (if any)
@@ -50,7 +60,7 @@ The shift: user says "go", "build it", "do it" → switch to implementation.
 
 ## Workspace Rules
 
-- Brain files: `~/.openclaw/nimmit/` (or `{{BRAIN_DIR}}/`)
+- Brain files: `{{BRAIN_DIR}}/`
 - Code projects: `~/workspace/<project-name>/`
 - Secrets: `~/.secrets/`
 - CLI binaries: `~/.local/bin/`

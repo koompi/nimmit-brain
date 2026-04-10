@@ -2,7 +2,7 @@
 
 ## System
 - **Machine:** Auto-detected (Linux preferred)
-- **OS:** Arch-based (KOOMPI OS)
+- **OS:** Arch-based or Ubuntu 22.04+
 - **Runtime:** Bun (never npm/yarn/pnpm), Node 22
 - **Python:** uv (never pip), venv at ~/.venv/
 - **Rust:** rustc 1.85+, cargo
@@ -112,6 +112,6 @@
 
 ## Workspace Rules
 - Code projects → `~/workspace/<project-name>/` (flat, no subdirectories)
-- Brain files → `~/.openclaw/nimmit/`
+- Brain files → `{{BRAIN_DIR}}/`
 - CLI binaries → `~/.local/bin/`
 - Secrets → `~/.secrets/` (never in brain files or config)

@@ -1,16 +1,16 @@
 #!/usr/bin/env bash
 set -euo pipefail
 
-# koompi-nimmit installer v3.1.0
+# OpenClaw Agent Template installer v4.0.0
 # Deploys an OpenClaw AI agent from the brain/ template.
 #
 # Interactive:
-#   curl -fsSL https://nimmit.koompi.ai | bash
+#   curl -fsSL https://raw.githubusercontent.com/koompi/koompi-nimmit/master/install.sh | bash
 #
 # Non-interactive (CI/automation):
 #   bash install.sh --non-interactive --name "Atlas" --org "Acme" --token "123:ABC..."
 
-VERSION="3.2.0"
+VERSION="4.0.0"
 REPO="koompi/koompi-nimmit"
 BRANCH="master"
 
@@ -99,7 +99,6 @@ CHANNEL="telegram"
 TIMEZONE=""
 LANGUAGE="en"
 SKIP_DEPS=false
-IS_MINI=false
 DIVISIONS=false
 PRIMARY_MODEL="google/gemini-3.1-pro-preview"
 NON_INTERACTIVE=false
@@ -122,7 +121,6 @@ while [[ $# -gt 0 ]]; do
         --language)         LANGUAGE="$2"; shift 2 ;;
         --model)            PRIMARY_MODEL="$2"; shift 2 ;;
         --skip-deps)        SKIP_DEPS=true; shift ;;
-        --mini)             IS_MINI=true; shift ;;
         --divisions)        DIVISIONS=true; shift ;;
         --non-interactive)  NON_INTERACTIVE=true; shift ;;
         --uninstall)        uninstall; exit 0 ;;
@@ -147,10 +145,9 @@ Options:
   --timezone TZ           Timezone (default: auto-detect)
   --language LANG         Language code (default: en)
   --skip-deps             Skip system packages
-  --mini                  KOOMPI Mini mode (autologin)
-  --divisions             Enable 4-division mode
+  --divisions             Enable all 9 divisions
   --non-interactive       Skip all prompts (use flags only)
-  --uninstall             Remove koompi-nimmit installation
+  --uninstall             Remove installation
   -h, --help              Show this help
 HELP
             exit 0 ;;
@@ -190,7 +187,7 @@ detect_timezone() {
 interactive_setup() {
     echo ""
     echo -e "${BOLD}${MAGENTA}━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━${NC}"
-    echo -e "${BOLD}${MAGENTA}  KOOMPI Nimmit — AI Agent Installer v${VERSION}${NC}"
+    echo -e "${BOLD}${MAGENTA}  OpenClaw Agent Template — Installer v${VERSION}${NC}"
     echo -e "${BOLD}${MAGENTA}━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━${NC}"
     echo ""
     echo -e "  ${DIM}This will set up an AI agent on this machine.${NC}"
@@ -304,14 +301,8 @@ interactive_setup() {
     echo -e "${BOLD}${BLUE}  Step 5/5: Options${NC}"
     echo ""
 
-    if ask_yn "Enable 4 departments (build, product, growth, ops)?" "n"; then
+    if ask_yn "Enable all 9 departments?" "n"; then
         DIVISIONS=true
-    fi
-
-    if [[ -f /etc/arch-release ]] || grep -qi "koompi" /etc/os-release 2>/dev/null; then
-        if ask_yn "Is this a KOOMPI Mini? (enables autologin)" "n"; then
-            IS_MINI=true
-        fi
     fi
 
     echo ""
@@ -330,8 +321,7 @@ interactive_setup() {
     echo -e "  Google key:  ${BOLD}$([ -n "$GOOGLE_API_KEY" ] && echo "set" || echo "not set")${NC}"
     echo -e "  Copilot:     ${BOLD}$([ -n "$COPILOT_TOKEN" ] && echo "set" || echo "not set")${NC}"
     echo -e "  ZAI key:     ${BOLD}$([ -n "$ZAI_API_KEY" ] && echo "set" || echo "not set")${NC}"
-    echo -e "  Divisions:   ${BOLD}$([ "$DIVISIONS" == true ] && echo "yes (4)" || echo "no")${NC}"
-    echo -e "  KOOMPI Mini: ${BOLD}$([ "$IS_MINI" == true ] && echo "yes" || echo "no")${NC}"
+    echo -e "  Divisions:   ${BOLD}$([ "$DIVISIONS" == true ] && echo "yes (9)" || echo "no")${NC}"
     echo -e "  Install to:  ${BOLD}~/.openclaw/${SLUG}/${NC}"
     echo ""
 
@@ -572,7 +562,7 @@ MINIMAL
     # ─── Division templates ───
     if [[ "$DIVISIONS" == true && -d "$BRAIN_DIR/_config/divisions" ]]; then
         mkdir -p "$BRAIN_DIR/topics"
-        for div in build product growth ops; do
+        for div in build product content growth revenue distribution client-success intelligence ops; do
             if [[ -f "$BRAIN_DIR/_config/divisions/$div/SOUL.md" ]]; then
                 mkdir -p "$BRAIN_DIR/topics/$div/memory"
                 cp "$BRAIN_DIR/_config/divisions/$div/SOUL.md" "$BRAIN_DIR/topics/$div/SOUL.md"
@@ -582,7 +572,7 @@ MINIMAL
                     "$BRAIN_DIR/topics/$div/SOUL.md"
             fi
         done
-        ok "4 divisions configured: build, product, growth, ops"
+        ok "9 divisions configured: build, product, content, growth, revenue, distribution, client-success, intelligence, ops"
     fi
 
     # ─── Claude Code config ───
@@ -746,19 +736,6 @@ EOF
     loginctl enable-linger "$USER" 2>/dev/null || \
         warn "Could not enable lingering. Services may stop on logout."
 
-    # KOOMPI Mini autologin
-    if [[ "$IS_MINI" == true ]]; then
-        info "Configuring KOOMPI Mini autologin..."
-        sudo mkdir -p /etc/systemd/system/getty@tty1.service.d/
-        cat <<SUDOCONF | sudo tee /etc/systemd/system/getty@tty1.service.d/override.conf > /dev/null
-[Service]
-ExecStart=
-ExecStart=-/sbin/agetty -a ${USER} --noclear %I \$TERM
-SUDOCONF
-        sudo systemctl daemon-reload
-        ok "Autologin configured for ${USER}"
-    fi
-
     ok "All services enabled"
 }
 
@@ -790,7 +767,7 @@ init_repo() {
     cd "$BRAIN_DIR"
     git init -q 2>/dev/null || true
     git add -A
-    git commit -q -m "feat: ${AGENT_NAME} for ${ORG_NAME} — koompi-nimmit v${VERSION}" 2>/dev/null || true
+    git commit -q -m "feat: ${AGENT_NAME} for ${ORG_NAME} — OpenClaw Agent Template v${VERSION}" 2>/dev/null || true
 }
 
 # ─── Done ──────────────────────────────────────────────────────────────
@@ -833,7 +810,7 @@ finalize() {
 
 uninstall() {
     echo -e "${BOLD}${RED}━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━${NC}"
-    echo -e "${BOLD}${RED}  Uninstall koompi-nimmit${NC}"
+    echo -e "${BOLD}${RED}  Uninstall OpenClaw Agent${NC}"
     echo -e "${BOLD}${RED}━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━${NC}"
     echo ""
     echo -e "${YELLOW}This will:${NC}"
@@ -865,7 +842,7 @@ uninstall() {
     fi
 
     if [[ "$FOUND" == false ]]; then
-        warn "No koompi-nimmit installations found."
+        warn "No OpenClaw agent installations found."
         exit 0
     fi
 
