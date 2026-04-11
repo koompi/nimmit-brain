@@ -26,7 +26,7 @@ A production-ready template for an AI team that runs your company. Not a chatbot
 ## Quick start
 
 ```bash
-curl -fsSL https://raw.githubusercontent.com/koompi/koompi-nimmit/master/install.sh | bash
+curl -fsSL https://raw.githubusercontent.com/koompi/nimmit-brain/master/install.sh | bash
 ```
 
 Then enter your Telegram bot token when prompted.
@@ -108,7 +108,7 @@ bash install.sh --non-interactive --token "123:ABC..." [--google-key "AIza..."]
 ## Structure
 
 ```
-koompi-nimmit/
+nimmit-brain/
 ├── install.sh               # One-command setup
 ├── MIGRATION-GUIDE.md       # Customize for your company
 ├── brain/                   # AI team brain template
@@ -158,7 +158,7 @@ koompi-nimmit/
 | Model errors | Verify API keys. Try `/model <different>` in chat |
 
 ### Get help
-- Issues: https://github.com/koompi/koompi-nimmit/issues
+- Issues: https://github.com/koompi/nimmit-brain/issues
 - OpenClaw docs: https://docs.openclaw.ai
 
 ## Upgrading

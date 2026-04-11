@@ -14,7 +14,7 @@
     "koompi"
   ],
   "license": "Apache-2.0",
-  "repository": "github:koompi/koompi-nimmit",
+  "repository": "github:koompi/nimmit-brain",
   "files": [
     "brain/",
     "config/",

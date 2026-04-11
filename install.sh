@@ -5,13 +5,13 @@ set -euo pipefail
 # Deploys Nimmit AI agent from the brain/ template.
 #
 # Interactive:
-#   curl -fsSL https://raw.githubusercontent.com/koompi/koompi-nimmit/master/install.sh | bash
+#   curl -fsSL https://raw.githubusercontent.com/koompi/nimmit-brain/master/install.sh | bash
 #
 # Non-interactive (CI/automation):
 #   bash install.sh --non-interactive --token "123:ABC..." [--google-key "AIza..."]
 
 VERSION="4.0.0"
-REPO="koompi/koompi-nimmit"
+REPO="koompi/nimmit-brain"
 BRANCH="master"
 
 # Install paths
@@ -734,7 +734,7 @@ finalize() {
     echo -e "    ${CYAN}systemctl --user restart openclaw${NC}         ${DIM}# Restart${NC}"
     echo -e "    ${CYAN}cat ${BRAIN_DIR}/ARCHITECTURE.md${NC}  ${DIM}# How it works${NC}"
     echo ""
-    echo -e "  ${DIM}Learn more: https://github.com/koompi/koompi-nimmit${NC}"
+    echo -e "  ${DIM}Learn more: https://github.com/koompi/nimmit-brain${NC}"
     echo ""
 }
 
